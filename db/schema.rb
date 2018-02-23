@@ -10,11 +10,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180223043118) do
+ActiveRecord::Schema.define(version: 20180223064613) do
 
   create_table "discs", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "space_id"
+    t.integer "player_id"
+    t.index ["player_id"], name: "index_discs_on_player_id"
+    t.index ["space_id"], name: "index_discs_on_space_id", unique: true
   end
 
   create_table "players", force: :cascade do |t|
@@ -25,6 +29,8 @@ ActiveRecord::Schema.define(version: 20180223043118) do
   create_table "spaces", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "column"
+    t.integer "row"
   end
 
 end
