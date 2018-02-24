@@ -285,3 +285,192 @@ Migrating to AddSpaceIdAndPlayerIdToDiscs (20180223064613)
             FROM sqlite_temp_master
             WHERE name='index_discs_on_space_id' AND type='index'
 [0m
+  [1m[35m (0.5ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[35m (0.9ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ?[0m  [["key", "environment"]]
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ?[0m  [["key", "environment"]]
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ?[0m  [["key", "environment"]]
+  [1m[35m (3.7ms)[0m  [1m[35mDROP TABLE IF EXISTS "discs"[0m
+  [1m[35m (0.4ms)[0m  [1m[34mSELECT sqlite_version(*)[0m
+  [1m[35m (1.8ms)[0m  [1m[35mCREATE TABLE "discs" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL, "space_id" integer, "player_id" integer)[0m
+  [1m[35m (1.6ms)[0m  [1m[35mCREATE  INDEX "index_discs_on_player_id" ON "discs" ("player_id")[0m
+  [1m[35m (0.3ms)[0m  [1m[34m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_discs_on_player_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_discs_on_player_id' AND type='index'
+[0m
+  [1m[35m (1.5ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_discs_on_space_id" ON "discs" ("space_id")[0m
+  [1m[35m (1.9ms)[0m  [1m[35mDROP TABLE IF EXISTS "players"[0m
+  [1m[35m (1.7ms)[0m  [1m[35mCREATE TABLE "players" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL)[0m
+  [1m[35m (1.7ms)[0m  [1m[35mDROP TABLE IF EXISTS "spaces"[0m
+  [1m[35m (1.3ms)[0m  [1m[35mCREATE TABLE "spaces" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL, "column" integer, "row" integer)[0m
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[35m (1.9ms)[0m  [1m[32mINSERT INTO "schema_migrations" (version) VALUES
+(20180223042641);
+
+[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.2ms)[0m  [1m[34mSELECT  "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? LIMIT ?[0m  [["key", "environment"], ["LIMIT", 1]]
+  [1m[35m (0.2ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.1ms)[0m  [1m[34mSELECT  "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? LIMIT ?[0m  [["key", "environment"], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[35m (2.4ms)[0m  [1m[35mDROP TABLE IF EXISTS "discs"[0m
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT sqlite_version(*)[0m
+  [1m[35m (1.4ms)[0m  [1m[35mCREATE TABLE "discs" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL, "space_id" integer, "player_id" integer)[0m
+  [1m[35m (1.6ms)[0m  [1m[35mCREATE  INDEX "index_discs_on_player_id" ON "discs" ("player_id")[0m
+  [1m[35m (0.3ms)[0m  [1m[34m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_discs_on_player_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_discs_on_player_id' AND type='index'
+[0m
+  [1m[35m (1.7ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_discs_on_space_id" ON "discs" ("space_id")[0m
+  [1m[35m (2.0ms)[0m  [1m[35mDROP TABLE IF EXISTS "players"[0m
+  [1m[35m (1.5ms)[0m  [1m[35mCREATE TABLE "players" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL)[0m
+  [1m[35m (2.0ms)[0m  [1m[35mDROP TABLE IF EXISTS "spaces"[0m
+  [1m[35m (1.5ms)[0m  [1m[35mCREATE TABLE "spaces" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL, "column" integer, "row" integer)[0m
+  [1m[35m (0.4ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.6ms)[0m  [1m[34mSELECT  "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? LIMIT ?[0m  [["key", "environment"], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.4ms)[0m  [1m[33mUPDATE "ar_internal_metadata" SET "value" = ?, "updated_at" = ? WHERE "ar_internal_metadata"."key" = ?[0m  [["value", "development"], ["updated_at", "2018-02-24 01:02:31.077210"], ["key", "environment"]]
+  [1m[35m (1.0ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.1ms)[0m  [1m[34mSELECT  "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? LIMIT ?[0m  [["key", "environment"], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.4ms)[0m  [1m[33mUPDATE "ar_internal_metadata" SET "value" = ?, "updated_at" = ? WHERE "ar_internal_metadata"."key" = ?[0m  [["value", "test"], ["updated_at", "2018-02-24 01:02:31.081619"], ["key", "environment"]]
+  [1m[35m (1.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.6ms)[0m  [1m[32mINSERT INTO "spaces" ("created_at", "updated_at", "column", "row") VALUES (?, ?, ?, ?)[0m  [["created_at", "2018-02-24 01:02:31.103905"], ["updated_at", "2018-02-24 01:02:31.103905"], ["column", 1], ["row", 1]]
+  [1m[35m (1.2ms)[0m  [1m[36mcommit transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.6ms)[0m  [1m[32mINSERT INTO "spaces" ("created_at", "updated_at", "column", "row") VALUES (?, ?, ?, ?)[0m  [["created_at", "2018-02-24 01:02:31.108840"], ["updated_at", "2018-02-24 01:02:31.108840"], ["column", 1], ["row", 2]]
+  [1m[35m (1.2ms)[0m  [1m[36mcommit transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.4ms)[0m  [1m[32mINSERT INTO "spaces" ("created_at", "updated_at", "column", "row") VALUES (?, ?, ?, ?)[0m  [["created_at", "2018-02-24 01:02:31.112266"], ["updated_at", "2018-02-24 01:02:31.112266"], ["column", 1], ["row", 3]]
+  [1m[35m (1.0ms)[0m  [1m[36mcommit transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.5ms)[0m  [1m[32mINSERT INTO "spaces" ("created_at", "updated_at", "column", "row") VALUES (?, ?, ?, ?)[0m  [["created_at", "2018-02-24 01:02:31.115155"], ["updated_at", "2018-02-24 01:02:31.115155"], ["column", 1], ["row", 4]]
+  [1m[35m (1.4ms)[0m  [1m[36mcommit transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.4ms)[0m  [1m[32mINSERT INTO "spaces" ("created_at", "updated_at", "column", "row") VALUES (?, ?, ?, ?)[0m  [["created_at", "2018-02-24 01:02:31.119248"], ["updated_at", "2018-02-24 01:02:31.119248"], ["column", 1], ["row", 5]]
+  [1m[35m (1.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.5ms)[0m  [1m[32mINSERT INTO "spaces" ("created_at", "updated_at", "column", "row") VALUES (?, ?, ?, ?)[0m  [["created_at", "2018-02-24 01:02:31.122522"], ["updated_at", "2018-02-24 01:02:31.122522"], ["column", 1], ["row", 6]]
+  [1m[35m (7.7ms)[0m  [1m[36mcommit transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.5ms)[0m  [1m[32mINSERT INTO "spaces" ("created_at", "updated_at", "column", "row") VALUES (?, ?, ?, ?)[0m  [["created_at", "2018-02-24 01:02:31.132748"], ["updated_at", "2018-02-24 01:02:31.132748"], ["column", 2], ["row", 1]]
+  [1m[35m (1.2ms)[0m  [1m[36mcommit transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.4ms)[0m  [1m[32mINSERT INTO "spaces" ("created_at", "updated_at", "column", "row") VALUES (?, ?, ?, ?)[0m  [["created_at", "2018-02-24 01:02:31.135902"], ["updated_at", "2018-02-24 01:02:31.135902"], ["column", 2], ["row", 2]]
+  [1m[35m (1.0ms)[0m  [1m[36mcommit transaction[0m
+  [1m[35m (0.2ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.6ms)[0m  [1m[32mINSERT INTO "spaces" ("created_at", "updated_at", "column", "row") VALUES (?, ?, ?, ?)[0m  [["created_at", "2018-02-24 01:02:31.139092"], ["updated_at", "2018-02-24 01:02:31.139092"], ["column", 2], ["row", 3]]
+  [1m[35m (1.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.5ms)[0m  [1m[32mINSERT INTO "spaces" ("created_at", "updated_at", "column", "row") VALUES (?, ?, ?, ?)[0m  [["created_at", "2018-02-24 01:02:31.142294"], ["updated_at", "2018-02-24 01:02:31.142294"], ["column", 2], ["row", 4]]
+  [1m[35m (1.3ms)[0m  [1m[36mcommit transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.5ms)[0m  [1m[32mINSERT INTO "spaces" ("created_at", "updated_at", "column", "row") VALUES (?, ?, ?, ?)[0m  [["created_at", "2018-02-24 01:02:31.145679"], ["updated_at", "2018-02-24 01:02:31.145679"], ["column", 2], ["row", 5]]
+  [1m[35m (1.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.5ms)[0m  [1m[32mINSERT INTO "spaces" ("created_at", "updated_at", "column", "row") VALUES (?, ?, ?, ?)[0m  [["created_at", "2018-02-24 01:02:31.148854"], ["updated_at", "2018-02-24 01:02:31.148854"], ["column", 2], ["row", 6]]
+  [1m[35m (1.2ms)[0m  [1m[36mcommit transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.6ms)[0m  [1m[32mINSERT INTO "spaces" ("created_at", "updated_at", "column", "row") VALUES (?, ?, ?, ?)[0m  [["created_at", "2018-02-24 01:02:31.152226"], ["updated_at", "2018-02-24 01:02:31.152226"], ["column", 3], ["row", 1]]
+  [1m[35m (1.4ms)[0m  [1m[36mcommit transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.5ms)[0m  [1m[32mINSERT INTO "spaces" ("created_at", "updated_at", "column", "row") VALUES (?, ?, ?, ?)[0m  [["created_at", "2018-02-24 01:02:31.156075"], ["updated_at", "2018-02-24 01:02:31.156075"], ["column", 3], ["row", 2]]
+  [1m[35m (1.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.4ms)[0m  [1m[32mINSERT INTO "spaces" ("created_at", "updated_at", "column", "row") VALUES (?, ?, ?, ?)[0m  [["created_at", "2018-02-24 01:02:31.159276"], ["updated_at", "2018-02-24 01:02:31.159276"], ["column", 3], ["row", 3]]
+  [1m[35m (1.0ms)[0m  [1m[36mcommit transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.6ms)[0m  [1m[32mINSERT INTO "spaces" ("created_at", "updated_at", "column", "row") VALUES (?, ?, ?, ?)[0m  [["created_at", "2018-02-24 01:02:31.162277"], ["updated_at", "2018-02-24 01:02:31.162277"], ["column", 3], ["row", 4]]
+  [1m[35m (1.2ms)[0m  [1m[36mcommit transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.9ms)[0m  [1m[32mINSERT INTO "spaces" ("created_at", "updated_at", "column", "row") VALUES (?, ?, ?, ?)[0m  [["created_at", "2018-02-24 01:02:31.165700"], ["updated_at", "2018-02-24 01:02:31.165700"], ["column", 3], ["row", 5]]
+  [1m[35m (1.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.6ms)[0m  [1m[32mINSERT INTO "spaces" ("created_at", "updated_at", "column", "row") VALUES (?, ?, ?, ?)[0m  [["created_at", "2018-02-24 01:02:31.170179"], ["updated_at", "2018-02-24 01:02:31.170179"], ["column", 3], ["row", 6]]
+  [1m[35m (1.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.5ms)[0m  [1m[32mINSERT INTO "spaces" ("created_at", "updated_at", "column", "row") VALUES (?, ?, ?, ?)[0m  [["created_at", "2018-02-24 01:02:31.173668"], ["updated_at", "2018-02-24 01:02:31.173668"], ["column", 4], ["row", 1]]
+  [1m[35m (1.3ms)[0m  [1m[36mcommit transaction[0m
+  [1m[35m (0.2ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.7ms)[0m  [1m[32mINSERT INTO "spaces" ("created_at", "updated_at", "column", "row") VALUES (?, ?, ?, ?)[0m  [["created_at", "2018-02-24 01:02:31.177569"], ["updated_at", "2018-02-24 01:02:31.177569"], ["column", 4], ["row", 2]]
+  [1m[35m (1.2ms)[0m  [1m[36mcommit transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.4ms)[0m  [1m[32mINSERT INTO "spaces" ("created_at", "updated_at", "column", "row") VALUES (?, ?, ?, ?)[0m  [["created_at", "2018-02-24 01:02:31.181820"], ["updated_at", "2018-02-24 01:02:31.181820"], ["column", 4], ["row", 3]]
+  [1m[35m (1.2ms)[0m  [1m[36mcommit transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.9ms)[0m  [1m[32mINSERT INTO "spaces" ("created_at", "updated_at", "column", "row") VALUES (?, ?, ?, ?)[0m  [["created_at", "2018-02-24 01:02:31.185433"], ["updated_at", "2018-02-24 01:02:31.185433"], ["column", 4], ["row", 4]]
+  [1m[35m (1.3ms)[0m  [1m[36mcommit transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.5ms)[0m  [1m[32mINSERT INTO "spaces" ("created_at", "updated_at", "column", "row") VALUES (?, ?, ?, ?)[0m  [["created_at", "2018-02-24 01:02:31.189810"], ["updated_at", "2018-02-24 01:02:31.189810"], ["column", 4], ["row", 5]]
+  [1m[35m (0.9ms)[0m  [1m[36mcommit transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.4ms)[0m  [1m[32mINSERT INTO "spaces" ("created_at", "updated_at", "column", "row") VALUES (?, ?, ?, ?)[0m  [["created_at", "2018-02-24 01:02:31.193710"], ["updated_at", "2018-02-24 01:02:31.193710"], ["column", 4], ["row", 6]]
+  [1m[35m (1.0ms)[0m  [1m[36mcommit transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.6ms)[0m  [1m[32mINSERT INTO "spaces" ("created_at", "updated_at", "column", "row") VALUES (?, ?, ?, ?)[0m  [["created_at", "2018-02-24 01:02:31.196994"], ["updated_at", "2018-02-24 01:02:31.196994"], ["column", 5], ["row", 1]]
+  [1m[35m (1.2ms)[0m  [1m[36mcommit transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.5ms)[0m  [1m[32mINSERT INTO "spaces" ("created_at", "updated_at", "column", "row") VALUES (?, ?, ?, ?)[0m  [["created_at", "2018-02-24 01:02:31.204212"], ["updated_at", "2018-02-24 01:02:31.204212"], ["column", 5], ["row", 2]]
+  [1m[35m (1.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.4ms)[0m  [1m[32mINSERT INTO "spaces" ("created_at", "updated_at", "column", "row") VALUES (?, ?, ?, ?)[0m  [["created_at", "2018-02-24 01:02:31.207608"], ["updated_at", "2018-02-24 01:02:31.207608"], ["column", 5], ["row", 3]]
+  [1m[35m (1.2ms)[0m  [1m[36mcommit transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.4ms)[0m  [1m[32mINSERT INTO "spaces" ("created_at", "updated_at", "column", "row") VALUES (?, ?, ?, ?)[0m  [["created_at", "2018-02-24 01:02:31.210965"], ["updated_at", "2018-02-24 01:02:31.210965"], ["column", 5], ["row", 4]]
+  [1m[35m (1.3ms)[0m  [1m[36mcommit transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.5ms)[0m  [1m[32mINSERT INTO "spaces" ("created_at", "updated_at", "column", "row") VALUES (?, ?, ?, ?)[0m  [["created_at", "2018-02-24 01:02:31.214698"], ["updated_at", "2018-02-24 01:02:31.214698"], ["column", 5], ["row", 5]]
+  [1m[35m (1.0ms)[0m  [1m[36mcommit transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.5ms)[0m  [1m[32mINSERT INTO "spaces" ("created_at", "updated_at", "column", "row") VALUES (?, ?, ?, ?)[0m  [["created_at", "2018-02-24 01:02:31.218129"], ["updated_at", "2018-02-24 01:02:31.218129"], ["column", 5], ["row", 6]]
+  [1m[35m (1.2ms)[0m  [1m[36mcommit transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.4ms)[0m  [1m[32mINSERT INTO "spaces" ("created_at", "updated_at", "column", "row") VALUES (?, ?, ?, ?)[0m  [["created_at", "2018-02-24 01:02:31.222114"], ["updated_at", "2018-02-24 01:02:31.222114"], ["column", 6], ["row", 1]]
+  [1m[35m (1.5ms)[0m  [1m[36mcommit transaction[0m
+  [1m[35m (6.5ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.6ms)[0m  [1m[32mINSERT INTO "spaces" ("created_at", "updated_at", "column", "row") VALUES (?, ?, ?, ?)[0m  [["created_at", "2018-02-24 01:02:31.233105"], ["updated_at", "2018-02-24 01:02:31.233105"], ["column", 6], ["row", 2]]
+  [1m[35m (1.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.4ms)[0m  [1m[32mINSERT INTO "spaces" ("created_at", "updated_at", "column", "row") VALUES (?, ?, ?, ?)[0m  [["created_at", "2018-02-24 01:02:31.236600"], ["updated_at", "2018-02-24 01:02:31.236600"], ["column", 6], ["row", 3]]
+  [1m[35m (1.0ms)[0m  [1m[36mcommit transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.5ms)[0m  [1m[32mINSERT INTO "spaces" ("created_at", "updated_at", "column", "row") VALUES (?, ?, ?, ?)[0m  [["created_at", "2018-02-24 01:02:31.239388"], ["updated_at", "2018-02-24 01:02:31.239388"], ["column", 6], ["row", 4]]
+  [1m[35m (1.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.4ms)[0m  [1m[32mINSERT INTO "spaces" ("created_at", "updated_at", "column", "row") VALUES (?, ?, ?, ?)[0m  [["created_at", "2018-02-24 01:02:31.242723"], ["updated_at", "2018-02-24 01:02:31.242723"], ["column", 6], ["row", 5]]
+  [1m[35m (0.9ms)[0m  [1m[36mcommit transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.4ms)[0m  [1m[32mINSERT INTO "spaces" ("created_at", "updated_at", "column", "row") VALUES (?, ?, ?, ?)[0m  [["created_at", "2018-02-24 01:02:31.245442"], ["updated_at", "2018-02-24 01:02:31.245442"], ["column", 6], ["row", 6]]
+  [1m[35m (1.0ms)[0m  [1m[36mcommit transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.5ms)[0m  [1m[32mINSERT INTO "spaces" ("created_at", "updated_at", "column", "row") VALUES (?, ?, ?, ?)[0m  [["created_at", "2018-02-24 01:02:31.247963"], ["updated_at", "2018-02-24 01:02:31.247963"], ["column", 7], ["row", 1]]
+  [1m[35m (1.0ms)[0m  [1m[36mcommit transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.5ms)[0m  [1m[32mINSERT INTO "spaces" ("created_at", "updated_at", "column", "row") VALUES (?, ?, ?, ?)[0m  [["created_at", "2018-02-24 01:02:31.250678"], ["updated_at", "2018-02-24 01:02:31.250678"], ["column", 7], ["row", 2]]
+  [1m[35m (1.6ms)[0m  [1m[36mcommit transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.7ms)[0m  [1m[32mINSERT INTO "spaces" ("created_at", "updated_at", "column", "row") VALUES (?, ?, ?, ?)[0m  [["created_at", "2018-02-24 01:02:31.254689"], ["updated_at", "2018-02-24 01:02:31.254689"], ["column", 7], ["row", 3]]
+  [1m[35m (1.0ms)[0m  [1m[36mcommit transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.5ms)[0m  [1m[32mINSERT INTO "spaces" ("created_at", "updated_at", "column", "row") VALUES (?, ?, ?, ?)[0m  [["created_at", "2018-02-24 01:02:31.258379"], ["updated_at", "2018-02-24 01:02:31.258379"], ["column", 7], ["row", 4]]
+  [1m[35m (1.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.4ms)[0m  [1m[32mINSERT INTO "spaces" ("created_at", "updated_at", "column", "row") VALUES (?, ?, ?, ?)[0m  [["created_at", "2018-02-24 01:02:31.261547"], ["updated_at", "2018-02-24 01:02:31.261547"], ["column", 7], ["row", 5]]
+  [1m[35m (1.3ms)[0m  [1m[36mcommit transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.8ms)[0m  [1m[32mINSERT INTO "spaces" ("created_at", "updated_at", "column", "row") VALUES (?, ?, ?, ?)[0m  [["created_at", "2018-02-24 01:02:31.264872"], ["updated_at", "2018-02-24 01:02:31.264872"], ["column", 7], ["row", 6]]
+  [1m[35m (1.3ms)[0m  [1m[36mcommit transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "spaces"[0m
+  [1m[36mSpace Load (0.4ms)[0m  [1m[34mSELECT  "spaces".* FROM "spaces" LIMIT ?[0m  [["LIMIT", 11]]

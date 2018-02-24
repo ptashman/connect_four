@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe Player, type: :model do
   subject(:player) { FactoryBot.create(:player) }
   before do
-    @third_column_first_row_space = FactoryBot.create(:space, column: 3, row: 1)
+    @third_column_first_row_space = Space.find_by_column_and_row(3, 1)
   end
   describe "#move" do
     it "creates a disc for the user in the correct space" do
