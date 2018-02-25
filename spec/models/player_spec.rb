@@ -2,12 +2,40 @@ require 'rails_helper'
 
 RSpec.describe Player, type: :model do
   subject(:player) { FactoryBot.create(:player) }
-  let(:third_column_first_row_space) { Space.find_by_column_and_row(3, 1) }
   describe "#move" do
-    it "creates a disc for the user in the correct space" do
-      expect { player.move(3) }.to change(
-        Disc.where(space: third_column_first_row_space, player: player),
-      :count).by(1)
+    let(:space1) { Space.find_by_column_and_row(3, 1) }
+    let(:space2) { Space.find_by_column_and_row(3, 2) }
+    let(:space3) { Space.find_by_column_and_row(3, 3) }
+    let(:space4) { Space.find_by_column_and_row(3, 4) }
+    let(:space5) { Space.find_by_column_and_row(3, 5) }
+    let(:space6) { Space.find_by_column_and_row(3, 6) }
+    context "when player attempts a move into a column with an empty space" do
+      it "creates a disc for the user in the correct space" do
+        expect { player.move(3) }.to change(
+          Disc.where(space: space1, player: player),
+        :count).by(1)
+      end
+      it "returns new disc" do
+        expect(player.move(3)).to eq Disc.find_by_space_id_and_player_id(space1, player)
+      end
+    end
+    context "when player attempts a move into a full column" do
+      before do
+        Disc.create(space: space1, player: player)
+        Disc.create(space: space2, player: player)
+        Disc.create(space: space3, player: player)
+        Disc.create(space: space4, player: player)
+        Disc.create(space: space5, player: player)
+        Disc.create(space: space6, player: player)
+      end
+      it "does not create a disc" do
+        expect { player.move(3) }.to_not change(
+          Disc.where(space: space1, player: player),
+        :count)
+      end
+      it "returns false" do
+        expect(player.move(3)).to eq nil
+      end
     end
   end
   describe "#has_won?" do
