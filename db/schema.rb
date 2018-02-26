@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180225183828) do
+ActiveRecord::Schema.define(version: 20180226070517) do
 
   create_table "discs", force: :cascade do |t|
     t.datetime "created_at", null: false
@@ -26,6 +26,7 @@ ActiveRecord::Schema.define(version: 20180225183828) do
     t.datetime "updated_at", null: false
     t.string "name"
     t.string "number"
+    t.boolean "computer"
   end
 
   create_table "spaces", force: :cascade do |t|

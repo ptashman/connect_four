@@ -14,42 +14,18 @@ class Space < ApplicationRecord
     return nil
   end
 
-  def self.horizontal_disc_set?(player)
-    set_of_four?("horizontal", player)
-  end
-
-  def self.vertical_disc_set?(player)
-    set_of_four?("vertical", player)
-  end
-
-  def self.diagonal_disc_set?(player)
-    return true if set_of_four?("diagonal_up", player)
-    set_of_four?("diagonal_down", player)
-  end
-
-  def self.horizontal_disc_room?(player)
-    set_of_four?("horizontal", player, true)
-  end
-
-  def self.vertical_disc_room?(player)
-    set_of_four?("vertical", player, true)
-  end
-
-  def self.diagonal_disc_room?(player)
-    return true if set_of_four?("diagonal_up", player, true)
-    set_of_four?("diagonal_down", player, true)
-  end
-
-  def self.set_of_four?(direction, player, including_empty_spaces=false)
+  def self.sets_of_four(direction, player, including_empty_spaces=false)
+    sets = []
     lines_of_spaces(direction, player).each do |spaces|
       if including_empty_spaces
         spaces_to_check = spaces.select { |s| s.player == player || s.player.nil? }.compact
       else
         spaces_to_check = spaces.select { |s| s.player == player }.compact
       end
-      return true if spaces_to_check.present? && check_set(spaces_to_check, 0, direction)
+      set = check_set(spaces_to_check, 0, direction)
+      sets << set if set.present?
     end
-    return false
+    sets
   end
 
   private
@@ -75,13 +51,14 @@ class Space < ApplicationRecord
 
   def self.check_set(spaces, index, direction, disc_set=[])
     disc_set << spaces[index]
-    return true if disc_set.count > 3
+    return disc_set if disc_set.count > 3
+    return [] unless spaces[index+1]
     next_column = spaces[index].column + direction_translation(direction)[0]
     next_row = spaces[index].row + direction_translation(direction)[1]
-    if spaces[index+1].try(:column) == next_column && spaces[index+1].try(:row) == next_row
+    if spaces[index+1].column == next_column && spaces[index+1].row == next_row
       check_set(spaces, index+1, direction, disc_set)
     else
-      return false
+      check_set(spaces, index+1, direction)
     end
   end
 

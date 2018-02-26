@@ -163,4 +163,63 @@ RSpec.describe Player, type: :model do
       end
     end
   end
+  describe "#column_for_computer" do
+    let!(:computer_player) { FactoryBot.create(:player, name: "computer", computer: true) }
+    let!(:human_player) { FactoryBot.create(:player, name: "computer", computer: false) }
+    context "when all spaces are void of discs" do
+      it "returns 4" do
+        expect(computer_player.column_for_computer).to eq 4
+      end
+    end
+    context "when other player has 3 in a row with an open space for a 4th" do
+      let(:space1) { Space.find_by_column_and_row(2, 1) }
+      let(:space2) { Space.find_by_column_and_row(3, 2) }
+      let(:space3) { Space.find_by_column_and_row(4, 3) }
+      let(:space4) { Space.find_by_column_and_row(5, 4) }
+      let(:space5) { Space.find_by_column_and_row(7, 1) }
+      let(:space6) { Space.find_by_column_and_row(6, 2) }
+      let(:space7) { Space.find_by_column_and_row(5, 3) }
+      let(:space8) { Space.find_by_column_and_row(4, 4) }
+      context "when computer also has 3 in a row with an open space for a 4th" do
+        before do
+          Disc.create(space: space1, player: computer_player)
+          Disc.create(space: space2, player: computer_player)
+          Disc.create(space: space3, player: computer_player)
+          Disc.create(space: space6, player: human_player)
+          Disc.create(space: space7, player: human_player)
+          Disc.create(space: space8, player: human_player)
+        end
+        it "moves to add to its own, largest, open set" do
+          expect(computer_player.column_for_computer).to eq 5
+        end
+      end
+      context "when computer does not have an open set of 3" do
+        before do
+          Disc.create(space: space1, player: computer_player)
+          Disc.create(space: space2, player: computer_player)
+          Disc.create(space: space3, player: computer_player)
+          Disc.create(space: space4, player: human_player)
+          Disc.create(space: space6, player: human_player)
+          Disc.create(space: space7, player: human_player)
+          Disc.create(space: space8, player: human_player)
+        end
+        it "moves to add to its own, largest, open set" do
+          expect(computer_player.column_for_computer).to eq 7
+        end
+      end
+    end
+    context "when other player does not have 3 in a row with an open space for a 4th" do
+      let(:space1) { Space.find_by_column_and_row(1, 1) }
+      let(:space2) { Space.find_by_column_and_row(2, 1) }
+      let(:space3) { Space.find_by_column_and_row(3, 1) }
+      before do
+        Disc.create(space: space1, player: computer_player)
+        Disc.create(space: space2, player: computer_player)
+        Disc.create(space: space3, player: computer_player)
+      end
+      it "moves to add to its own, largest, open set" do
+        expect(computer_player.column_for_computer).to eq 4
+      end
+    end
+  end
 end
