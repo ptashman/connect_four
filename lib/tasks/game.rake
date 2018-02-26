@@ -6,12 +6,13 @@ namespace :game do
     player2 = Player.create(name: request_name(2), number: 2)
     current_player = player1
     move = 1
-    while (!current_player.has_won?)
+    while (!the_game_is_tied?(player1, player2))
       current_player = (move%2 == 1) ? player1 : player2
       request_move(current_player, 1)
+      announce_winner(current_player) if current_player.has_won?
       move += 1
     end
-    p "Congratulations, #{current_player.name}! You've won!"
+    p "The game is tied!"
     destroy_all_discs_and_players
   end
 
@@ -35,6 +36,15 @@ namespace :game do
     	p "Sorry, too many attempts to move into a full column. Aborting now."
       exit
     end
+  end
+
+  def the_game_is_tied?(player1, player2)
+    !player1.has_room_for_win? && !player2.has_room_for_win?
+  end
+
+  def announce_winner(player)
+    p "Congratulations, #{player.name}! You've won!"
+    exit
   end
 
   def destroy_all_discs_and_players
