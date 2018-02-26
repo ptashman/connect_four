@@ -6,9 +6,10 @@ class GamePlay < ApplicationRecord
     comp == "Y" ? (p "Now playing against the computer."; true) : false
   end
 
-  def self.request_move_from_computer(player)
-    column = player.column_for_computer
-    player.move(column)
+  def self.request_move_from_computer(computer_player, human_player)
+    column = computer_player.column_for_computer(human_player)
+    computer_player.move(column)
+    p "The computer has moved into column #{column}."
   end
 
   def self.request_name(number)

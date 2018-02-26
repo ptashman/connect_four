@@ -24,11 +24,11 @@ RSpec.describe GamePlay, type: :model do
   end
   describe ".request_move_from_computer" do
     let(:computer_player) { FactoryBot.create(:player, computer: true) }
-    let!(:human_player) { FactoryBot.create(:player, computer: false) }
-    let(:column) { computer_player.column_for_computer }
+    let(:human_player) { FactoryBot.create(:player, computer: false) }
+    let(:column) { computer_player.column_for_computer(human_player) }
     it "moves into the correct column" do
       expect(computer_player).to receive(:move).with(column)
-      GamePlay.request_move_from_computer(computer_player)
+      GamePlay.request_move_from_computer(computer_player, human_player)
     end
   end
   describe ".request_name" do

@@ -22,10 +22,9 @@ class Player < ApplicationRecord
     horizontal_room || vertical_room || diagonal_up_room || diagonal_down_room
   end
 
-  def column_for_computer
+  def column_for_computer(human_player)
     target_spaces = []
     target_spaces << empty_spaces_that_could_win_game(3)
-    human_player = self.class.find_by_computer(false)
     target_spaces << human_player.empty_spaces_that_could_win_game(3)
     target_spaces << empty_spaces_that_could_win_game(2)
     target_spaces << empty_spaces_that_could_win_game(1)

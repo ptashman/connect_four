@@ -168,7 +168,7 @@ RSpec.describe Player, type: :model do
     let!(:human_player) { FactoryBot.create(:player, name: "computer", computer: false) }
     context "when all spaces are void of discs" do
       it "returns 4" do
-        expect(computer_player.column_for_computer).to eq 4
+        expect(computer_player.column_for_computer(human_player)).to eq 4
       end
     end
     context "when other player has 3 in a row with an open space for a 4th" do
@@ -190,7 +190,7 @@ RSpec.describe Player, type: :model do
           Disc.create(space: space8, player: human_player)
         end
         it "moves to add to its own, largest, open set" do
-          expect(computer_player.column_for_computer).to eq 5
+          expect(computer_player.column_for_computer(human_player)).to eq 5
         end
       end
       context "when computer does not have an open set of 3" do
@@ -204,7 +204,7 @@ RSpec.describe Player, type: :model do
           Disc.create(space: space8, player: human_player)
         end
         it "moves to add to its own, largest, open set" do
-          expect(computer_player.column_for_computer).to eq 7
+          expect(computer_player.column_for_computer(human_player)).to eq 7
         end
       end
     end
@@ -218,7 +218,7 @@ RSpec.describe Player, type: :model do
         Disc.create(space: space3, player: computer_player)
       end
       it "moves to add to its own, largest, open set" do
-        expect(computer_player.column_for_computer).to eq 4
+        expect(computer_player.column_for_computer(human_player)).to eq 4
       end
     end
   end

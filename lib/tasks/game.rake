@@ -13,7 +13,7 @@ namespace :game do
     while (!GamePlay.the_game_is_tied?(player1, player2))
       current_player = (move%2 == 1) ? player1 : player2
       if computer_is_playing && current_player == player2
-        GamePlay.request_move_from_computer(current_player)
+        GamePlay.request_move_from_computer(current_player, player1)
       else
         GamePlay.request_move(current_player, 1)
       end
