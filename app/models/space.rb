@@ -27,22 +27,39 @@ class Space < ApplicationRecord
     set_of_four?("diagonal_down", player)
   end
 
-  private
+  def self.horizontal_disc_room?(player)
+    set_of_four?("horizontal", player, true)
+  end
 
-  def self.set_of_four?(direction, player)
+  def self.vertical_disc_room?(player)
+    set_of_four?("vertical", player, true)
+  end
+
+  def self.diagonal_disc_room?(player)
+    return true if set_of_four?("diagonal_up", player, true)
+    set_of_four?("diagonal_down", player, true)
+  end
+
+  def self.set_of_four?(direction, player, including_empty_spaces=false)
     lines_of_spaces(direction, player).each do |spaces|
-      spaces = spaces.select { |s| s.disc.present? }.compact
-      return true if spaces.present? && check_set(spaces, 0, direction)
+      if including_empty_spaces
+        spaces_to_check = spaces.select { |s| s.player == player || s.player.nil? }.compact
+      else
+        spaces_to_check = spaces.select { |s| s.player == player }.compact
+      end
+      return true if spaces_to_check.present? && check_set(spaces_to_check, 0, direction)
     end
     return false
   end
 
+  private
+
   def self.lines_of_spaces(direction, player)
     case direction
     when "horizontal"
-      select { |s| s.player == player }.group_by(&:row).values
+      all.group_by(&:row).values.compact
     when "vertical"
-      select { |s| s.player == player }.group_by(&:column).values
+      all.group_by(&:column).values.compact
     when "diagonal_up"
       sliced = all.group_by(&:row).values
       right_diagonals = (0..6).map { |x| (0..5).map { |i| sliced[i].try(:[], i+x) }.compact }

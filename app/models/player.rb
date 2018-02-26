@@ -12,4 +12,11 @@ class Player < ApplicationRecord
     diagonal_win = Space.diagonal_disc_set?(self)
     horizontal_win || vertical_win || diagonal_win
   end
+
+  def has_room_for_win?
+    horizontal_room = Space.horizontal_disc_room?(self)
+    vertical_room = Space.vertical_disc_room?(self)
+    diagonal_room = Space.diagonal_disc_room?(self)
+    horizontal_room || vertical_room || diagonal_room
+  end
 end

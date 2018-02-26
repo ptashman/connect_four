@@ -159,5 +159,131 @@ RSpec.describe Space, type: :model do
         end
       end
     end
+    describe "disc room methods" do
+      describe ".horizontal_disc_room?" do
+        let(:player) { FactoryBot.create(:player) }
+        let(:other_player) { FactoryBot.create(:player) }
+        let(:space1) { Space.find_by_column_and_row(2, 3) }
+        let(:space2) { Space.find_by_column_and_row(3, 3) }
+        let(:space3) { Space.find_by_column_and_row(4, 3) }
+        let(:space4) { Space.find_by_column_and_row(5, 3) }
+        context "when there is room for one horizontal set" do
+          before do
+            Space.all.each do |s|
+              Disc.create(space: s, player: other_player)
+            end
+            Disc.find_by_space_id(space1.id).update_attributes(player: player)
+            Disc.find_by_space_id(space2.id).update_attributes(player: player)
+            Disc.find_by_space_id(space3.id).update_attributes(player: player)
+            Disc.find_by_space_id(space4.id).destroy
+          end
+          it "returns true" do
+            expect(Space.horizontal_disc_room?(player)).to eq true
+          end
+        end
+        context "when there is no room for a horizontal set" do
+          before do
+            Space.all.each do |s|
+              Disc.create(space: s, player: other_player)
+            end
+            Disc.find_by_space_id(space1.id).update_attributes(player: player)
+            Disc.find_by_space_id(space2.id).update_attributes(player: player)
+            Disc.find_by_space_id(space3.id).update_attributes(player: player)
+          end
+          it "returns false" do
+            expect(Space.horizontal_disc_room?(player)).to eq false
+          end
+        end
+      end
+      describe ".vertical_disc_room?" do
+        let(:player) { FactoryBot.create(:player) }
+        let(:other_player) { FactoryBot.create(:player) }
+        let(:space1) { Space.find_by_column_and_row(4, 1) }
+        let(:space2) { Space.find_by_column_and_row(4, 2) }
+        let(:space3) { Space.find_by_column_and_row(4, 3) }
+        let(:space4) { Space.find_by_column_and_row(4, 4) }
+        context "when there is room for a vertical set" do
+          before do
+            Space.all.each do |s|
+              Disc.create(space: s, player: other_player)
+            end
+            Disc.find_by_space_id(space1.id).update_attributes(player: player)
+            Disc.find_by_space_id(space2.id).update_attributes(player: player)
+            Disc.find_by_space_id(space3.id).update_attributes(player: player)
+            Disc.find_by_space_id(space4.id).destroy
+          end
+          it "returns true" do
+            expect(Space.vertical_disc_room?(player)).to eq true
+          end
+        end
+        context "when there is no room for a vertical set" do
+          before do
+            Space.all.each do |s|
+              Disc.create(space: s, player: other_player)
+            end
+            Disc.find_by_space_id(space1.id).update_attributes(player: player)
+            Disc.find_by_space_id(space2.id).update_attributes(player: player)
+            Disc.find_by_space_id(space3.id).update_attributes(player: player)
+          end
+          it "returns false" do
+            expect(Space.vertical_disc_room?(player)).to eq false
+          end
+        end
+      end
+      describe ".diagonal_disc_room?" do
+        let(:player) { FactoryBot.create(:player) }
+        let(:other_player) { FactoryBot.create(:player) }
+        let(:space1) { Space.find_by_column_and_row(2, 1) }
+        let(:space2) { Space.find_by_column_and_row(3, 2) }
+        let(:space3) { Space.find_by_column_and_row(4, 3) }
+        let(:space4) { Space.find_by_column_and_row(5, 4) }
+        let(:space5) { Space.find_by_column_and_row(6, 2) }
+        let(:space6) { Space.find_by_column_and_row(5, 3) }
+        let(:space7) { Space.find_by_column_and_row(4, 4) }
+        let(:space8) { Space.find_by_column_and_row(3, 5) }
+        let(:space9) { Space.find_by_column_and_row(3, 5) }
+        context "when there is room for one bottom left to upper right diagonal set" do
+          before do
+            Space.all.each do |s|
+              Disc.create(space: s, player: other_player)
+            end
+            Disc.find_by_space_id(space1.id).update_attributes(player: player)
+            Disc.find_by_space_id(space2.id).update_attributes(player: player)
+            Disc.find_by_space_id(space3.id).update_attributes(player: player)
+            Disc.find_by_space_id(space4.id).destroy
+          end
+          it "returns true" do
+            expect(Space.diagonal_disc_room?(player)).to eq true
+          end
+        end
+        context "when there is room for one bottom right to upper left diagonal set" do
+          before do
+            Space.all.each do |s|
+              Disc.create(space: s, player: other_player)
+            end
+            Disc.find_by_space_id(space5.id).destroy
+            Disc.find_by_space_id(space6.id).update_attributes(player: player)
+            Disc.find_by_space_id(space7.id).update_attributes(player: player)
+            Disc.find_by_space_id(space8.id).update_attributes(player: player)
+          end
+          it "returns true" do
+            expect(Space.diagonal_disc_room?(player)).to eq true
+          end
+        end
+        context "when there is no room for a diagonal set" do
+          before do
+            Space.all.each do |s|
+              Disc.create(space: s, player: other_player)
+            end
+            Disc.find_by_space_id(space1.id).update_attributes(player: player)
+            Disc.find_by_space_id(space2.id).update_attributes(player: player)
+            Disc.find_by_space_id(space3.id).update_attributes(player: player)
+          end
+          it "returns false" do
+            expect(Space.diagonal_disc_room?(player)).to eq false
+          end
+        end
+      end
+    end
   end
 end
