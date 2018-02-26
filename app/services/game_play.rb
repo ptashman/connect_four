@@ -1,4 +1,16 @@
 class GamePlay < ApplicationRecord
+
+  def self.request_computer_player
+    p "Would you like to play against the computer? (Y/y/N/n)"
+    comp = STDIN.gets.strip.upcase
+    comp == "Y" ? (p "Now playing against the computer."; true) : false
+  end
+
+  def self.request_move_from_computer(player)
+    column = player.column_for_computer
+    player.move(column)
+  end
+
   def self.request_name(number)
     p "Player #{number}, what is your name?"
     player_name = STDIN.gets.strip

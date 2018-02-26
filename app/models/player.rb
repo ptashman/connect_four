@@ -23,14 +23,13 @@ class Player < ApplicationRecord
   end
 
   def column_for_computer
-    primary_offense_columns = empty_spaces_that_could_win_game(3).map(&:column)
-    return primary_offense_columns.first if primary_offense_columns.present?
+    target_spaces = []
+    target_spaces << empty_spaces_that_could_win_game(3)
     human_player = self.class.find_by_computer(false)
-    defense_columns = human_player.empty_spaces_that_could_win_game(3).map(&:column)
-    return defense_columns.first if defense_columns.flatten.present?
-    secondary_offense_columns = empty_spaces_that_could_win_game(2).map(&:column)
-    secondary_offense_columns << empty_spaces_that_could_win_game(1).map(&:column)
-    secondary_offense_columns.flatten.first || 4
+    target_spaces << human_player.empty_spaces_that_could_win_game(3)
+    target_spaces << empty_spaces_that_could_win_game(2)
+    target_spaces << empty_spaces_that_could_win_game(1)
+    (target_spaces.flatten.map(&:column) << 4).first
   end
 
   def empty_spaces_that_could_win_game(min_discs_per_set)

@@ -164,7 +164,7 @@ RSpec.describe Player, type: :model do
     end
   end
   describe "#column_for_computer" do
-    let!(:computer_player) { FactoryBot.create(:player, name: "computer", computer: true) }
+    let(:computer_player) { FactoryBot.create(:player, name: "computer", computer: true) }
     let!(:human_player) { FactoryBot.create(:player, name: "computer", computer: false) }
     context "when all spaces are void of discs" do
       it "returns 4" do

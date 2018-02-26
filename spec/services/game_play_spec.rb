@@ -1,10 +1,37 @@
 require 'rails_helper'
 
 RSpec.describe GamePlay, type: :model do
+  before do
+    allow($stdout).to receive(:write)
+  end
+  describe ".request_computer_player" do
+    context "when user says they want a computer player" do
+      before do
+        allow(STDIN).to receive_message_chain(:gets, :strip) { "y" }
+      end
+      it "returns true" do
+        expect(GamePlay.request_computer_player).to eq true
+      end
+    end
+    context "when user says they do not want a computer player" do
+      before do
+        allow(STDIN).to receive_message_chain(:gets, :strip) { "n" }
+      end
+      it "returns false" do
+        expect(GamePlay.request_computer_player).to eq false
+      end
+    end
+  end
+  describe ".request_move_from_computer" do
+    let(:computer_player) { FactoryBot.create(:player, computer: true) }
+    let!(:human_player) { FactoryBot.create(:player, computer: false) }
+    let(:column) { computer_player.column_for_computer }
+    it "moves into the correct column" do
+      expect(computer_player).to receive(:move).with(column)
+      GamePlay.request_move_from_computer(computer_player)
+    end
+  end
   describe ".request_name" do
-  	before do
-  	  allow($stdout).to receive(:write)
-  	end
     it "asks for player name" do
       expect(STDIN).to receive_message_chain(:gets, :strip) { "John" }
       GamePlay.request_name(1)
@@ -16,9 +43,6 @@ RSpec.describe GamePlay, type: :model do
   end
   describe ".request_move" do
   	let(:player) { FactoryBot.create(:player) }
-    before do
-  	  allow($stdout).to receive(:write)
-  	end
     it "asks for column in which to move" do
       expect(STDIN).to receive_message_chain(:gets, :strip) { "1" }
       GamePlay.request_move(player, 1)
@@ -52,9 +76,6 @@ RSpec.describe GamePlay, type: :model do
   end
   describe ".announce_winner" do
     let(:player) { FactoryBot.create(:player, name: "John") }
-    before do
-  	  allow($stdout).to receive(:write)
-  	end
     it "exits" do
       expect(GamePlay.announce_winner(player)).to raise_error(SystemError)
     end
