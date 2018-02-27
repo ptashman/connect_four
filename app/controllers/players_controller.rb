@@ -3,9 +3,13 @@ class PlayersController < ApplicationController
   # GET /players
   # GET /players.json
   def index
-    @winning_player_name = "You" if player.has_won?
-    @winning_player_name = "The computer" if computer_player.has_won?
-    @winning_player_name ||= nil
+    @winning_player_name = if player.has_won?
+      "You"
+    elsif computer_player.has_won?
+      "The computer"
+    else
+      nil
+    end
     set_spaces
   end
 
