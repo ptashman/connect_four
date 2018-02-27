@@ -1,6 +1,13 @@
 <p id="notice"><%= notice %></p>
 
-<h1>Players</h1>
+<h1>Connect Four</h1>
+<h2>Your color is red. The computer's color is black.</h2>
+<% if @winning_player_name %>
+  <h2><%= @winning_player_name %> won!</h2>
+<% end %>
+<p>
+  <%= button_to "Reset Game", discs_path, method: :delete %>
+</p>
 
 <table>
   <thead>
@@ -10,16 +17,15 @@
   </thead>
 
   <tbody>
-    <% @players.each do |player| %>
+    <% @row_arr.each do |row| %>
       <tr>
-        <td><%= link_to 'Show', player %></td>
-        <td><%= link_to 'Edit', edit_player_path(player) %></td>
-        <td><%= link_to 'Destroy', player, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <% @spaces.where(row: row).each do |s| %>
+          <% if s.row == 1 %>
+            <%= button_to "Move", players_move_path(:column => s.column), disabled: @winning_player_name.present?, class: "game_button" %>
+          <% end %>
+          <%= content_tag :td, "", class: ["space_square", s.disc.try(:color)] %>
+        <% end %>
       </tr>
     <% end %>
   </tbody>
 </table>
-
-<br>
-
-<%= link_to 'New Player', new_player_path %>

@@ -4,7 +4,10 @@ class PlayersController < ApplicationController
   # GET /players
   # GET /players.json
   def index
-    @players = Player.all
+    @winning_player_name = "You" if player.has_won?
+    @winning_player_name = "The computer" if computer_player.has_won?
+    @winning_player_name ||= nil
+    set_spaces
   end
 
   # GET /players/1
@@ -61,14 +64,36 @@ class PlayersController < ApplicationController
     end
   end
 
+  # POST /players/move
+  def move
+    player.move(params[:column])
+    column_for_computer = computer_player.column_for_computer(player)
+    computer_player.move(column_for_computer)
+    redirect_back(fallback_location: root_path)
+  end
+
   private
+
     # Use callbacks to share common setup or constraints between actions.
     def set_player
-      @player = Player.find(params[:id])
+      @player = Player.create(number: 1, computer: false)
+    end
+
+    def player
+      Player.find_by_number_and_computer(1, false)
+    end
+
+    def computer_player
+      Player.find_by_number_and_computer(2, true)
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def player_params
       params.fetch(:player, {})
+    end
+
+    def set_spaces
+      @spaces = Space.all
+      @row_arr = (1..6).to_a.reverse
     end
 end

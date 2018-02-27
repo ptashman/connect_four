@@ -61,6 +61,12 @@ class DiscsController < ApplicationController
     end
   end
 
+  # DELETE /discs
+  def delete_all
+    Disc.destroy_all
+    redirect_back(fallback_location: root_path)
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_disc
