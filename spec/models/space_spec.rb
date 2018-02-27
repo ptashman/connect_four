@@ -74,7 +74,7 @@ RSpec.describe Space, type: :model do
           Disc.create(space: space4, player: player)
         end
         it "returns true" do
-          expect(Space.sets_of_four("horizontal", player).flatten.present?).to eq true
+          expect(Space.sets_of_four_in_one_direction("horizontal", player).flatten.present?).to eq true
         end
       end
       context "when there is no horizontal set" do
@@ -84,7 +84,7 @@ RSpec.describe Space, type: :model do
           Disc.create(space: space3, player: player)
         end
         it "returns false" do
-          expect(Space.sets_of_four("horizontal", player).flatten.present?).to eq false
+          expect(Space.sets_of_four_in_one_direction("horizontal", player).flatten.present?).to eq false
         end
       end
     end
@@ -102,7 +102,7 @@ RSpec.describe Space, type: :model do
           Disc.create(space: space4, player: player)
         end
         it "returns true" do
-          expect(Space.sets_of_four("vertical", player).flatten.present?).to eq true
+          expect(Space.sets_of_four_in_one_direction("vertical", player).flatten.present?).to eq true
         end
       end
       context "when there is no vertical set" do
@@ -112,7 +112,7 @@ RSpec.describe Space, type: :model do
           Disc.create(space: space3, player: player)
         end
         it "returns false" do
-          expect(Space.sets_of_four("vertical", player).flatten.present?).to eq false
+          expect(Space.sets_of_four_in_one_direction("vertical", player).flatten.present?).to eq false
         end
       end
     end
@@ -134,7 +134,7 @@ RSpec.describe Space, type: :model do
           Disc.create(space: space4, player: player)
         end
         it "returns true" do
-          expect(Space.sets_of_four("diagonal_up", player).flatten.present?).to eq true
+          expect(Space.sets_of_four_in_one_direction("diagonal_up", player).flatten.present?).to eq true
         end
       end
       context "when there is one bottom right to upper left diagonal set" do
@@ -145,7 +145,7 @@ RSpec.describe Space, type: :model do
           Disc.create(space: space8, player: player)
         end
         it "returns true" do
-          expect(Space.sets_of_four("diagonal_down", player).flatten.present?).to eq true
+          expect(Space.sets_of_four_in_one_direction("diagonal_down", player).flatten.present?).to eq true
         end
       end
       context "when there is no diagonal set" do
@@ -155,10 +155,10 @@ RSpec.describe Space, type: :model do
           Disc.create(space: space4, player: player)
         end
         it "returns false for bottom left to upper right" do
-          expect(Space.sets_of_four("diagonal_up", player).flatten.present?).to eq false
+          expect(Space.sets_of_four_in_one_direction("diagonal_up", player).flatten.present?).to eq false
         end
         it "returns false for bottom right to upper left" do
-          expect(Space.sets_of_four("diagonal_down", player).flatten.present?).to eq false
+          expect(Space.sets_of_four_in_one_direction("diagonal_down", player).flatten.present?).to eq false
         end
       end
     end
@@ -181,7 +181,7 @@ RSpec.describe Space, type: :model do
             Disc.find_by_space_id(space4.id).destroy
           end
           it "returns true" do
-            expect(Space.sets_of_four("horizontal", player, true).flatten.present?).to eq true
+            expect(Space.sets_of_four_in_one_direction("horizontal", player, true).flatten.present?).to eq true
           end
         end
         context "when there is no room for a horizontal set" do
@@ -194,7 +194,7 @@ RSpec.describe Space, type: :model do
             Disc.find_by_space_id(space3.id).update_attributes(player: player)
           end
           it "returns false" do
-            expect(Space.sets_of_four("horizontal", player, true).flatten.present?).to eq false
+            expect(Space.sets_of_four_in_one_direction("horizontal", player, true).flatten.present?).to eq false
           end
         end
       end
@@ -216,7 +216,7 @@ RSpec.describe Space, type: :model do
             Disc.find_by_space_id(space4.id).destroy
           end
           it "returns true" do
-            expect(Space.sets_of_four("vertical", player, true).flatten.present?).to eq true
+            expect(Space.sets_of_four_in_one_direction("vertical", player, true).flatten.present?).to eq true
           end
         end
         context "when there is no room for a vertical set" do
@@ -229,7 +229,7 @@ RSpec.describe Space, type: :model do
             Disc.find_by_space_id(space3.id).update_attributes(player: player)
           end
           it "returns false" do
-            expect(Space.sets_of_four("vertical", player, true).flatten.present?).to eq false
+            expect(Space.sets_of_four_in_one_direction("vertical", player, true).flatten.present?).to eq false
           end
         end
       end
@@ -256,7 +256,7 @@ RSpec.describe Space, type: :model do
             Disc.find_by_space_id(space4.id).destroy
           end
           it "returns true" do
-            expect(Space.sets_of_four("diagonal_up", player, true).flatten.present?).to eq true
+            expect(Space.sets_of_four_in_one_direction("diagonal_up", player, true).flatten.present?).to eq true
           end
         end
         context "when there is room for one bottom right to upper left diagonal set" do
@@ -270,7 +270,7 @@ RSpec.describe Space, type: :model do
             Disc.find_by_space_id(space8.id).update_attributes(player: player)
           end
           it "returns true" do
-            expect(Space.sets_of_four("diagonal_down", player, true).flatten.present?).to eq true
+            expect(Space.sets_of_four_in_one_direction("diagonal_down", player, true).flatten.present?).to eq true
           end
         end
         context "when there is no room for a diagonal set" do
@@ -283,10 +283,10 @@ RSpec.describe Space, type: :model do
             Disc.find_by_space_id(space3.id).update_attributes(player: player)
           end
           it "returns false for bottom left to upper right" do
-            expect(Space.sets_of_four("diagonal_up", player, true).flatten.present?).to eq false
+            expect(Space.sets_of_four_in_one_direction("diagonal_up", player, true).flatten.present?).to eq false
           end
           it "returns false for bottom right to upper left" do
-            expect(Space.sets_of_four("diagonal_down", player, true).flatten.present?).to eq false
+            expect(Space.sets_of_four_in_one_direction("diagonal_down", player, true).flatten.present?).to eq false
           end
         end
       end

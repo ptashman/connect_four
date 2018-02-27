@@ -14,7 +14,28 @@ class Space < ApplicationRecord
     return nil
   end
 
-  def self.sets_of_four(direction, player, including_empty_spaces=false)
+  def self.empty_that_could_win_game_for(player, min_discs_per_set)
+    sets_with_min_discs = winning_sets_for(player, true).select do |space_set|
+      space_set.select { |space| space.player == player }.count >= min_discs_per_set
+    end
+    empty_spaces = []
+    sets_with_min_discs.each do |space_set|
+      empty_spaces << space_set.select { |space| space.disc.nil? }
+    end
+    return empty_spaces.flatten.select do |s|
+      s.row == 1 || Space.find_by_column_and_row(s.column, s.row-1).disc.present?
+    end
+  end
+
+  def self.winning_sets_for(player, including_potential_wins)
+    sets = []
+    ["horizontal", "vertical", "diagonal_up", "diagonal_down"].each do |direction|
+      sets += sets_of_four_in_one_direction(direction, player, including_potential_wins)
+    end
+    sets
+  end
+
+  def self.sets_of_four_in_one_direction(direction, player, including_empty_spaces=false)
     sets = []
     lines_of_spaces(direction, player).each do |spaces|
       if including_empty_spaces
@@ -29,6 +50,19 @@ class Space < ApplicationRecord
   end
 
   private
+
+  def self.check_set(spaces, index, direction, disc_set=[])
+    disc_set << spaces[index]
+    return disc_set if disc_set.count > 3
+    return [] unless spaces[index+1]
+    next_column = spaces[index].column + direction_translation(direction)[0]
+    next_row = spaces[index].row + direction_translation(direction)[1]
+    if spaces[index+1].column == next_column && spaces[index+1].row == next_row
+      check_set(spaces, index+1, direction, disc_set)
+    else
+      check_set(spaces, index+1, direction)
+    end
+  end
 
   def self.lines_of_spaces(direction, player)
     case direction
@@ -46,19 +80,6 @@ class Space < ApplicationRecord
       right_diagonals = (0..4).map { |x| (0..(4-x)).map { |i| sliced[i+x+1].try(:[], -i-1) }.compact }.compact
       left_diagonals = (0..6).map { |x| (0..5).map { |i| sliced[i].try(:[], -i-1-x) }.compact }.compact
       (right_diagonals + left_diagonals)
-    end
-  end
-
-  def self.check_set(spaces, index, direction, disc_set=[])
-    disc_set << spaces[index]
-    return disc_set if disc_set.count > 3
-    return [] unless spaces[index+1]
-    next_column = spaces[index].column + direction_translation(direction)[0]
-    next_row = spaces[index].row + direction_translation(direction)[1]
-    if spaces[index+1].column == next_column && spaces[index+1].row == next_row
-      check_set(spaces, index+1, direction, disc_set)
-    else
-      check_set(spaces, index+1, direction)
     end
   end
 
