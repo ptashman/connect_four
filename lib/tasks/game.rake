@@ -5,7 +5,7 @@ namespace :game do
     Player.destroy_all
     player1_name = GamePlay.request_name(1)
     computer_is_playing = GamePlay.request_computer_player
-    player2_name = computer_is_playing ? "Computer" : GamePlay.request_name(1)
+    player2_name = computer_is_playing ? "Computer" : GamePlay.request_name(2)
     player1 = Player.create(name: player1_name, number: 1)
     player2 = Player.create(name: player2_name, number: 2, computer: computer_is_playing)
     current_player = player1
