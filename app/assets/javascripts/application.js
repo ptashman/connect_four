@@ -11,5 +11,20 @@
 // about supported directives.
 //
 //= require rails-ujs
+//= require jquery
 //= require turbolinks
 //= require_tree .
+
+function toggle_difficulty(difficulty) {
+  if (difficulty == 'easy') {
+    $('.easy_move_button').removeClass('display-none');
+    $('.easy_move_button').addClass('display-inline');
+    $('.hard_move_button').removeClass('display-inline');
+    $('.hard_move_button').addClass('display-none');
+  } else if (difficulty == 'hard') {
+    $('.hard_move_button').removeClass('display-none');
+    $('.hard_move_button').addClass('display-inline');
+    $('.easy_move_button').removeClass('display-inline');
+    $('.easy_move_button').addClass('display-none');
+  }
+}

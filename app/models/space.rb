@@ -20,6 +20,7 @@ class Space < ApplicationRecord
     end
     empty_spaces = []
     sets_with_min_discs.each do |space_set|
+      space_set = remove_dangling_spaces_from(space_set)
       empty_spaces << space_set.select { |space| space.disc.nil? }
     end
     return empty_spaces.flatten.select do |s|
@@ -43,8 +44,10 @@ class Space < ApplicationRecord
       else
         spaces_to_check = spaces.select { |s| s.player == player }.compact
       end
-      set = check_set(spaces_to_check, 0, direction)
-      sets << set if set.present?
+      (0..2).each do |n|
+        set = check_set(spaces_to_check[n..n+3], 0, direction)
+        sets << set if set.present?
+      end
     end
     sets
   end
@@ -52,6 +55,7 @@ class Space < ApplicationRecord
   private
 
   def self.check_set(spaces, index, direction, disc_set=[])
+    return [] unless spaces.present?
     disc_set << spaces[index]
     return disc_set if disc_set.count > 3
     return [] unless spaces[index+1]
@@ -94,5 +98,12 @@ class Space < ApplicationRecord
     when "diagonal_down"
       [-1, 1]
     end
+  end
+
+  def self.remove_dangling_spaces_from(space_set)
+    space_set.compact!
+    space_set.delete(space_set[0]) if space_set[0].disc.nil? && space_set[1].disc.nil?
+    space_set.delete(space_set.last) if space_set.last(2)[1].disc.nil? && space_set.last(2)[0].disc.nil?
+    space_set
   end
 end

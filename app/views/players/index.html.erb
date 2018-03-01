@@ -1,5 +1,3 @@
-<p id="notice"><%= notice %></p>
-
 <h1>Connect Four</h1>
 <h2>Your color is red. The computer's color is black.</h2>
 <% if @winning_player_name %>
@@ -8,20 +6,20 @@
 <p>
   <%= button_to "Reset Game", discs_path, method: :delete %>
 </p>
+<p>
+  <h3>Difficulty:</h3>
+  Easy: <%= radio_button_tag "difficulty", "easy", @difficulty=="easy", onClick: "toggle_difficulty('easy');" %>
+  Hard: <%= radio_button_tag "difficulty", "hard", @difficulty=="hard", onClick: "toggle_difficulty('hard');" %>
+</p>
 
 <table>
-  <thead>
-    <tr>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
-
   <tbody>
     <% @row_arr.each do |row| %>
       <tr>
         <% @spaces.where(row: row).each do |s| %>
           <% if s.row == 1 %>
-            <%= button_to "Move", players_move_path(:column => s.column), disabled: @winning_player_name.present?, class: "game_button" %>
+            <%= button_to "Move", players_move_path(:column => s.column, difficulty: Player::DIFFICULTIES[0]), disabled: @winning_player_name.present?, class: @difficulty=="easy" ? "easy_move_button display-inline" : "easy_move_button display-none" %>
+            <%= button_to "Move", players_move_path(:column => s.column, difficulty: Player::DIFFICULTIES[1]), disabled: @winning_player_name.present?, class: @difficulty=="hard" ? "hard_move_button display-inline" : "hard_move_button display-none" %>
           <% end %>
           <%= content_tag :td, "", class: ["space_square", s.disc.try(:color)] %>
         <% end %>

@@ -18,8 +18,17 @@
   width: 50px;
   height: 50px;
 }
-.game_button {
+.easy_move_button {
   width: 61px;
+ }
+ .hard_move_button {
+  width: 61px;
+}
+ .display-inline {
+  display: inline;
+}
+.display-none {
+  display: none;
 }
 .white {
   background-color: white;

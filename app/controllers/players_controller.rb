@@ -11,13 +11,15 @@ class PlayersController < ApplicationController
       nil
     end
     set_spaces
+    @difficulty = session[:difficulty] || "easy"
   end
 
   # POST /players/move
   def move
     player.move(params[:column])
-    column_for_computer = computer_player.column_for_computer(player)
+    column_for_computer = computer_player.column_for_computer(player, params[:difficulty])
     computer_player.move(column_for_computer)
+    session[:difficulty] = params[:difficulty]
     redirect_back(fallback_location: root_path)
   end
 
@@ -32,7 +34,7 @@ class PlayersController < ApplicationController
     end
 
     def set_spaces
-      @spaces = Space.all
+      @spaces = Space.includes(:disc)
       @row_arr = (1..6).to_a.reverse
     end
 end
